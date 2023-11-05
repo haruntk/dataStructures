@@ -147,63 +147,15 @@ PolyNode* AddNode(PolyNode* head, double coef, int exp) {
 // Computes: poly3 = poly1 + poly2 and returns poly3
 //
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
-	// Fill this in
-	PolyNode* resultHead = (struct PolyNode*)malloc(sizeof(struct PolyNode)); // Creating new Polynome to store the result and storing its head
-	PolyNode* result = resultHead;
-	while (poly1->next && poly2->next) // Do addition
-	{
-		if (poly1->exp > poly2->exp) // If power of the first polynome is greater than the second
-		{
-			result->exp = poly1->exp;
-			result->coef = poly1->coef;
-			poly1 = poly1->next;
-		}
-		else if (poly2->exp > poly1->exp) // If power of the second polynome is greater than the first
-		{
-			result->exp = poly2->exp;
-			result->coef = poly2->coef;
-			poly2 = poly2->next;
-		}
-		else // If power of both polynomial numbers is same
-		{
-			result->exp = poly1->exp;
-			result->coef = poly1->coef + poly2->coef;
-			poly1 = poly1->next;
-			poly2 = poly2->next;
-		}
-		if (poly1 || poly2) {
-			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
-			result = result->next;
-		}
-		else {
-			result->next = NULL;
-		}
-	}
-	while (poly1) {
-		result->exp = poly1->exp;
-		result->coef = poly1->coef;
-		poly1 = poly1->next;
-		if (poly1) {
-			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
-			result = result->next;
-		}
-		else {
-			result->next = NULL;
-		}
-	}
-	while (poly2) {
-		result->exp = poly2->exp;
-		result->coef = poly2->coef;
+
+	PolyNode* result = poly1;
+
+	while (poly2 != NULL) {
+		result = AddNode(result, poly2->coef, poly2->exp);
 		poly2 = poly2->next;
-		if (poly2) {
-			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
-			result = result->next;
-		}
-		else {
-			result->next = NULL;
-		}
 	}
-	return resultHead;
+
+	return result;
 } //end-Add
 
 //-------------------------------------------------
@@ -211,8 +163,15 @@ PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 // Computes: poly3 = poly1 - poly2 and returns poly3
 //
 PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
-	// Fill this in
-	return NULL;
+
+	PolyNode* result = poly1;
+
+	while (poly2 != NULL) {
+		result = AddNode(result, -(poly2->coef), poly2->exp);
+		poly2 = poly2->next;
+	}
+
+	return result;
 } //end-Substract
 
 //-------------------------------------------------
