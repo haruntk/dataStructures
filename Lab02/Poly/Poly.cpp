@@ -2,6 +2,7 @@
 #include <ctype.h>
 #include "Poly.h"
 #include <stdlib.h>
+#include <math.h>
 //-------------------------------------------------
 // Creates a polynomial from an expression.
 // Returns a pointer to the first PolyNode in the list (head of the list)
@@ -138,7 +139,7 @@ PolyNode* AddNode(PolyNode* head, double coef, int exp) {
 		q->next = node;
 		return head;
 	}
-	return NULL;
+	return node;
 } // end-AddNode
 
 //-------------------------------------------------
@@ -227,8 +228,13 @@ PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
 // Evaluates the polynomial at a particular "x" value and returns the result
 //
 double Evaluate(PolyNode* poly, double x) {
-	// Fill this in
-	return 0;
+	
+	double res=0;
+	while (poly != NULL) {
+		res += poly->coef * pow(x,poly->exp);
+		poly = poly->next;
+	}
+	return res;
 } //end-Evaluate
 
 //-------------------------------------------------
@@ -236,8 +242,12 @@ double Evaluate(PolyNode* poly, double x) {
 // Ex: poly(x) = 3x^4 - 2x + 1-->Derivative(poly) = 12x^3 - 2
 //
 PolyNode* Derivative(PolyNode* poly) {
-	// Fill this in
-	return NULL;
+	PolyNode* deriv = new PolyNode();
+	while (poly != NULL && poly->exp != 0) {
+		deriv = AddNode(deriv, poly->coef * poly->exp, poly->exp - 1);
+		poly = poly->next;
+	}
+	return deriv;
 } //end-Derivative
 
 //-------------------------------------------------

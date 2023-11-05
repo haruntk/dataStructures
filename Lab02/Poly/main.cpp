@@ -71,8 +71,8 @@ void Test1() {
 	PolyNode* poly = NULL;
 	printf("Initial poly: "); Print(poly);
 
-	poly = AddNode(poly, -2, 5);
-	printf("Adding -2x^5: "); Print(poly);
+	poly = AddNode(poly, -2.5623, 5);
+	printf("Adding -2.5623x^5: "); Print(poly);
 
 	poly = AddNode(poly, 4.4, 7);
 	printf("Adding 4.4x^7: "); Print(poly);
@@ -113,8 +113,8 @@ void Test2() {
 	printf("[-x^2 +x  -  5]: "); Print(poly);
 	DeletePoly(poly);*/
 
-	poly = CreatePoly((char*)"2.3x^4 + 5x^3 - 2.6x - 4");
-	printf("[2.3x^4 + 5x^3 - 2.6x - 4]: "); Print(poly);
+	poly = CreatePoly((char*)"x^6 + 2x^4 - x^3 - 6.3x + 4.223");
+	printf("[x^6 + 2x^4 - x^3 - 6.3x + 4.223]: "); Print(poly);
 	DeletePoly(poly);
 
 	poly = CreatePoly((char*)"-4.5x^10 - 45.44");
