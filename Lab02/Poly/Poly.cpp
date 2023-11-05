@@ -220,8 +220,17 @@ PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 // Computes: poly3 = poly1 * poly2 and returns poly3
 //
 PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
-	// Fill this in
-	return NULL;
+	PolyNode* res = new PolyNode();
+	PolyNode* head = poly2;
+	while (poly1 != NULL) {
+		while (poly2 != NULL) {
+			res = AddNode(res, poly1->coef * poly2->coef, poly1->exp + poly2->exp);
+			poly2 = poly2->next;
+		}
+		poly2 = head;
+		poly1 = poly1->next;
+	}
+	return res;
 } //end-Multiply
 
 //-------------------------------------------------
@@ -260,4 +269,19 @@ PolyNode* Derivative(PolyNode* poly) {
 //
 void Plot(PolyNode* poly, int x1, int x2) {
 	// Fill this in	
+	for (int y = 12; y >= -12; y--) {
+		for (int x = x1; x <= x2; x++) {
+			//printf("x:%d\n y:%d \n value:%lf\n", x, y, round(Evaluate(poly, (double)x)));
+			if (round(Evaluate(poly, x)) == y)
+				printf("*");
+			else if (x == 0) 
+				printf("|");
+			
+			else if (y == 0)
+				printf("-");
+			else
+				printf(" ");
+		}
+		printf("\n");
+	}
 } //end-Plot
