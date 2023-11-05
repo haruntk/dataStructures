@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "Poly.h"
-
+#include <stdlib.h>
 //-------------------------------------------------
 // Creates a polynomial from an expression.
 // Returns a pointer to the first PolyNode in the list (head of the list)
@@ -18,17 +18,31 @@
 PolyNode* CreatePoly(char* expr) {
 
 	PolyNode* poly = nullptr;
-	int coefficient = 0, exponent = 0, sign = 1, i = 0;
+	double coefficient = 0;
+	int exponent = 0, sign = 1, i = 0;
 
 	while (expr[i] != '\0')
 	{
 		char c = expr[i];
-
 		if (isdigit(c))
 		{
-			int value = 0;
-			while (expr[i] != '\0' && isdigit(expr[i]))
+			double value = 0;
+			while (expr[i] != '\0' && isdigit(expr[i]) || expr[i] == '.')
 			{
+				if (expr[i] == '.')
+				{
+					int j = i + 1,cnt = 1;
+					float frac = 0.1;
+					while (isdigit(expr[j]))
+					{
+						value = value + (expr[i + 1] - '0') * frac;
+						frac *= 0.1;
+						j++;
+						cnt++;
+					}
+					i+=cnt;
+					continue;
+				}
 				value = value * 10 + (expr[i] - '0');
 				i++;
 			}
@@ -37,9 +51,11 @@ PolyNode* CreatePoly(char* expr) {
 		}
 		else if (c == 'x')
 		{
+			if (coefficient == 0)
+				coefficient = sign;
 			if (expr[i + 1] != '\0' && expr[i + 1] == '^')
 			{
-				i += 2; // Skip i
+				i += 2; // Skip x
 				int value = 0;
 				while (expr[i] != '\0' && isdigit(expr[i]))
 				{
@@ -53,27 +69,7 @@ PolyNode* CreatePoly(char* expr) {
 			{
 				exponent = 1;
 			}
-
-			if (poly == nullptr)
-			{
-				PolyNode* node = new PolyNode();
-				node->coef = coefficient;
-				node->exp = exponent;
-				node->next = nullptr;
-				poly = node;
-			}
-			else
-			{
-				PolyNode* current = poly;
-				while (current->next != nullptr) {
-					current = current->next;
-				}
-				PolyNode* node = new PolyNode;
-				node->coef = coefficient;
-				node->exp = exponent;
-				node->next = nullptr;
-				current->next = node;
-			}
+			poly = AddNode(poly, coefficient, exponent);
 
 			coefficient = 0;
 			exponent = 0;
@@ -88,26 +84,8 @@ PolyNode* CreatePoly(char* expr) {
 		}
 		i++;
 	}
-	if (poly == nullptr)
-	{
-		PolyNode* node = new PolyNode();
-		node->coef = coefficient;
-		node->exp = exponent;
-		node->next = nullptr;
-		poly = node;
-	}
-	else
-	{
-		PolyNode* current = poly;
-		while (current->next != nullptr) {
-			current = current->next;
-		}
-		PolyNode* node = new PolyNode;
-		node->coef = coefficient;
-		node->exp = exponent;
-		node->next = nullptr;
-		current->next = node;
-	}
+	poly = AddNode(poly, coefficient, exponent);
+
 	return poly;
 } //end-CreatePoly
 
@@ -169,8 +147,8 @@ PolyNode* AddNode(PolyNode* head, double coef, int exp) {
 //
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 	// Fill this in
-	PolyNode* result = new PolyNode(); // Creating new Polynome to store the result
-
+	PolyNode* resultHead = (struct PolyNode*)malloc(sizeof(struct PolyNode)); // Creating new Polynome to store the result and storing its head
+	PolyNode* result = resultHead;
 	while (poly1->next && poly2->next) // Do addition
 	{
 		if (poly1->exp > poly2->exp) // If power of the first polynome is greater than the second
@@ -192,29 +170,39 @@ PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 			poly1 = poly1->next;
 			poly2 = poly2->next;
 		}
-		result->next = new PolyNode(); // Create a new PolyNode
-		result = result->next;
-		result->next = NULL;
-	}
-	while (poly1->next || poly2->next) // Add remaining terms to result.
-	{
-		if (poly1->next)
-		{
-			result->exp = poly1->exp;
-			result->coef = poly1->coef;
-			poly1 = poly1->next;
+		if (poly1 || poly2) {
+			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
+			result = result->next;
 		}
-		if (poly2->next)
-		{
-			result->exp = poly2->exp;
-			result->coef = poly2->coef;
-			poly2 = poly2->next;
+		else {
+			result->next = NULL;
 		}
-		result->next = new PolyNode();
-		result = result->next;
-		result->next = NULL;
 	}
-	return NULL;
+	while (poly1) {
+		result->exp = poly1->exp;
+		result->coef = poly1->coef;
+		poly1 = poly1->next;
+		if (poly1) {
+			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
+			result = result->next;
+		}
+		else {
+			result->next = NULL;
+		}
+	}
+	while (poly2) {
+		result->exp = poly2->exp;
+		result->coef = poly2->coef;
+		poly2 = poly2->next;
+		if (poly2) {
+			result->next = (struct PolyNode*)malloc(sizeof(struct PolyNode));
+			result = result->next;
+		}
+		else {
+			result->next = NULL;
+		}
+	}
+	return resultHead;
 } //end-Add
 
 //-------------------------------------------------
