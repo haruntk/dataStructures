@@ -22,43 +22,43 @@ PolyNode* CreatePoly(char* expr) {
 	double coefficient = 0;
 	int exponent = 0, sign = 1, i = 0;
 
-	while (expr[i] != '\0')
+	while (expr[i] != '\0') // Until the end of the expression
 	{
-		char c = expr[i];
-		if (isdigit(c))
+		char c = expr[i]; // Take one by one
+		if (isdigit(c)) // If it's digit
 		{
 			double value = 0;
-			while (expr[i] != '\0' && isdigit(expr[i]) || expr[i] == '.')
+			while (expr[i] != '\0' && isdigit(expr[i]) || expr[i] == '.') // If it's still digit or float continue to calculate
 			{
-				if (expr[i] == '.')
+				if (expr[i] == '.') // If it's float
 				{
 					int j = i + 1, cnt = 1;
 					float frac = 0.1;
-					while (isdigit(expr[j]))
+					while (isdigit(expr[j])) // Calculate the value
 					{
 						value = value + (expr[j] - '0') * frac;
 						frac *= 0.1;
 						j++;
 						cnt++;
 					}
-					i += cnt;
+					i += cnt; // Skip taken expressions
 					continue;
 				}
-				value = value * 10 + (expr[i] - '0');
+				value = value * 10 + (expr[i] - '0'); // Calculate the value for non-float
 				i++;
 			}
-			coefficient = value * sign;
+			coefficient = value * sign; // Calculate the coefficient
 			i--;
 		}
-		else if (c == 'x')
+		else if (c == 'x') // If it's x
 		{
-			if (coefficient == 0 && expr[i + 1] != '.')
-				coefficient = sign;
-			if (expr[i + 1] != '\0' && expr[i + 1] == '^')
+			if (coefficient == 0 && expr[i + 1] != '.') // If coefficient is calculated 0
+				coefficient = sign; // Equalize it to sign (1 or -1)
+			if (expr[i + 1] != '\0' && expr[i + 1] == '^') // If it has exponent
 			{
 				i += 2; // Skip x
 				int value = 0;
-				while (expr[i] != '\0' && isdigit(expr[i]))
+				while (expr[i] != '\0' && isdigit(expr[i])) // Calculate the exponent
 				{
 					value = value * 10 + (expr[i] - '0');
 					i++;
@@ -70,24 +70,24 @@ PolyNode* CreatePoly(char* expr) {
 			{
 				exponent = 1;
 			}
-			poly = AddNode(poly, coefficient, exponent);
+			poly = AddNode(poly, coefficient, exponent); // Create new node
 
 			coefficient = 0;
 			exponent = 0;
 		}
-		else if (c == '-')
+		else if (c == '-') // If it's negative
 		{
 			sign = -1;
 		}
-		else if (c == '+')
+		else if (c == '+') // If it's positive
 		{
 			sign = +1;
 		}
 		i++;
 	}
-	poly = AddNode(poly, coefficient, exponent);
+	poly = AddNode(poly, coefficient, exponent); // Create last node
 
-	return poly;
+	return poly; // Return head
 } //end-CreatePoly
 
 /// -------------------------------------------------
@@ -95,12 +95,11 @@ PolyNode* CreatePoly(char* expr) {
 ///
 void DeletePoly(PolyNode* poly) {
 	// Fill this in
-	while (poly) {
-		PolyNode* temp = poly;
-		poly = poly->next;
-		delete temp;
+	while (poly) { // Until the poly is equal to nullptr (until the last node)
+		PolyNode* temp = poly; // Take head
+		poly = poly->next; // Go next
+		delete temp; // Delete previous
 	}
-	poly = nullptr;
 } // end-DeletePoly
 
 //-------------------------------------------------
