@@ -32,16 +32,16 @@ PolyNode* CreatePoly(char* expr) {
 			{
 				if (expr[i] == '.')
 				{
-					int j = i + 1,cnt = 1;
+					int j = i + 1, cnt = 1;
 					float frac = 0.1;
 					while (isdigit(expr[j]))
 					{
-						value = value + (expr[i + 1] - '0') * frac;
+						value = value + (expr[j] - '0') * frac;
 						frac *= 0.1;
 						j++;
 						cnt++;
 					}
-					i+=cnt;
+					i += cnt;
 					continue;
 				}
 				value = value * 10 + (expr[i] - '0');
@@ -52,7 +52,7 @@ PolyNode* CreatePoly(char* expr) {
 		}
 		else if (c == 'x')
 		{
-			if (coefficient == 0)
+			if (coefficient == 0 && expr[i + 1] != '.')
 				coefficient = sign;
 			if (expr[i + 1] != '\0' && expr[i + 1] == '^')
 			{
@@ -95,6 +95,12 @@ PolyNode* CreatePoly(char* expr) {
 ///
 void DeletePoly(PolyNode* poly) {
 	// Fill this in
+	while (poly) {
+		PolyNode* temp = poly;
+		poly = poly->next;
+		delete temp;
+	}
+	poly = nullptr;
 } // end-DeletePoly
 
 //-------------------------------------------------
@@ -148,11 +154,16 @@ PolyNode* AddNode(PolyNode* head, double coef, int exp) {
 //
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 
-	PolyNode* result = poly1;
-
-	while (poly2 != NULL) {
-		result = AddNode(result, poly2->coef, poly2->exp);
-		poly2 = poly2->next;
+	PolyNode* result = new PolyNode();
+	PolyNode* head = poly1;
+	while (head != NULL) {
+		result = AddNode(result, head->coef, head->exp);
+		head = head->next;
+	}
+	head = poly2;
+	while (head != NULL) {
+		result = AddNode(result, head->coef, head->exp);
+		head = head->next;
 	}
 
 	return result;
@@ -164,11 +175,16 @@ PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 //
 PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 
-	PolyNode* result = poly1;
-
-	while (poly2 != NULL) {
-		result = AddNode(result, -(poly2->coef), poly2->exp);
-		poly2 = poly2->next;
+	PolyNode* result = new PolyNode();
+	PolyNode* head = poly1;
+	while (head != NULL) {
+		result = AddNode(result, head->coef, head->exp);
+		head = head->next;
+	}
+	head = poly2;
+	while (head != NULL) {
+		result = AddNode(result, -(head->coef), head->exp);
+		head = head->next;
 	}
 
 	return result;
@@ -196,10 +212,10 @@ PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
 // Evaluates the polynomial at a particular "x" value and returns the result
 //
 double Evaluate(PolyNode* poly, double x) {
-	
-	double res=0;
+
+	double res = 0;
 	while (poly != NULL) {
-		res += poly->coef * pow(x,poly->exp);
+		res += poly->coef * pow(x, poly->exp);
 		poly = poly->next;
 	}
 	return res;
@@ -233,9 +249,9 @@ void Plot(PolyNode* poly, int x1, int x2) {
 			//printf("x:%d\n y:%d \n value:%lf\n", x, y, round(Evaluate(poly, (double)x)));
 			if (round(Evaluate(poly, x)) == y)
 				printf("*");
-			else if (x == 0) 
+			else if (x == 0)
 				printf("|");
-			
+
 			else if (y == 0)
 				printf("-");
 			else

@@ -157,6 +157,10 @@ void Test3() {
 	DeletePoly(poly1);
 	DeletePoly(poly2);
 	DeletePoly(poly3);
+	if (poly1 == NULL)
+	{
+		printf("NULL");		
+	}
 } //end-Test3
 
 	//----------------------------------------------------------------
