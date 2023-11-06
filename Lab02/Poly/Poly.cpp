@@ -100,7 +100,6 @@ void DeletePoly(PolyNode* poly) {
 		poly = poly->next;
 		delete temp;
 	}
-	poly = nullptr;
 } // end-DeletePoly
 
 //-------------------------------------------------
@@ -110,41 +109,54 @@ void DeletePoly(PolyNode* poly) {
 // Returns a pointer to the possibly new head of the polynomial.
 //
 PolyNode* AddNode(PolyNode* head, double coef, int exp) {
-	// Fill this in
+	// Create new node
 	PolyNode* node = new PolyNode();
 	node->coef = coef;
 	node->exp = exp;
 	node->next = NULL;
 
+	// Create 2 pointers to insert the node
 	PolyNode* p = head;
 	PolyNode* q = NULL;
+
+	// Walk over the nodes until we hit end of the list or
+	// node's exponent is bigger 
 	while (p != NULL && node->exp <= p->exp) {
+		// If there is already a node with the same exponent
+		// add coefficients and return. 
 		if (node->exp == p->exp) {
 			p->coef += node->coef;
-			if (q == NULL && p->coef == 0) {
+
+			if (q == NULL && p->coef == 0) { // If first node's coefficient is 0 delete the first node
 				delete q;
 				return p->next;
 			}
-			else if (p->coef == 0) {
+			
+			else if (p->coef == 0) { // Else if the sum equals to 0, then delete the node
 				q->next = p->next;
 				delete p;
 			}
 			return head;
 		}
+		// Iterate over linked list
 		q = p;
 		p = p->next;
 	}
 
+	// If we are inserting first element of the node
 	if (q == NULL) {
 		node->next = head;
 		return node;
 	}
 
+	// If we are inserting somewhere but the first element
 	else {
 		node->next = p;
 		q->next = node;
 		return head;
 	}
+
+	//Return head of the node
 	return node;
 } // end-AddNode
 
@@ -154,14 +166,24 @@ PolyNode* AddNode(PolyNode* head, double coef, int exp) {
 //
 PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 
+	// Create new list to store result.
 	PolyNode* result = new PolyNode();
+
+	// Create a node for iterating over poly1
 	PolyNode* head = poly1;
+
+
 	while (head != NULL) {
-		result = AddNode(result, head->coef, head->exp);
+		result = AddNode(result, head->coef, head->exp); // Add every node of poly1 to result
 		head = head->next;
 	}
+
+	// Assign poly2's head to some node
 	head = poly2;
+
 	while (head != NULL) {
+		// Result list already consists all of the poly1 node's
+		// We just simply add every poly2 nodes to result
 		result = AddNode(result, head->coef, head->exp);
 		head = head->next;
 	}
@@ -173,8 +195,9 @@ PolyNode* Add(PolyNode* poly1, PolyNode* poly2) {
 // Subtracts poly2 from poly1 and returns the resulting polynomial
 // Computes: poly3 = poly1 - poly2 and returns poly3
 //
-PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
-
+PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) { 
+	// Works similar to Add(). Only difference is we add every coefficient of 
+	// poly2 with minus
 	PolyNode* result = new PolyNode();
 	PolyNode* head = poly1;
 	while (head != NULL) {
@@ -197,8 +220,13 @@ PolyNode* Subtract(PolyNode* poly1, PolyNode* poly2) {
 PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
 	PolyNode* res = new PolyNode();
 	PolyNode* head = poly2;
+
+	// Iterates over poly1 and poly2
 	while (poly1 != NULL) {
 		while (poly2 != NULL) {
+			// Multiply the coefficients and sum the exponents
+			// and assign this to new list using AddNode() function
+			// which we coded earlier
 			res = AddNode(res, poly1->coef * poly2->coef, poly1->exp + poly2->exp);
 			poly2 = poly2->next;
 		}
@@ -214,7 +242,7 @@ PolyNode* Multiply(PolyNode* poly1, PolyNode* poly2) {
 double Evaluate(PolyNode* poly, double x) {
 
 	double res = 0;
-	while (poly != NULL) {
+	while (poly != NULL) { // Iterates over poly1 and sums every element
 		res += poly->coef * pow(x, poly->exp);
 		poly = poly->next;
 	}
@@ -228,6 +256,7 @@ double Evaluate(PolyNode* poly, double x) {
 PolyNode* Derivative(PolyNode* poly) {
 	PolyNode* deriv = new PolyNode();
 	while (poly != NULL && poly->exp != 0) {
+		// Multiply coefficient with exponent and decrease exponent by 1
 		deriv = AddNode(deriv, poly->coef * poly->exp, poly->exp - 1);
 		poly = poly->next;
 	}
@@ -244,15 +273,18 @@ PolyNode* Derivative(PolyNode* poly) {
 //
 void Plot(PolyNode* poly, int x1, int x2) {
 	// Fill this in	
+
+	// Nested loop for graph 
 	for (int y = 12; y >= -12; y--) {
 		for (int x = x1; x <= x2; x++) {
-			//printf("x:%d\n y:%d \n value:%lf\n", x, y, round(Evaluate(poly, (double)x)));
-			if (round(Evaluate(poly, x)) == y)
+
+			if (round(Evaluate(poly, x)) == y) // If value of polynomial at x is equals to y print '*'
 				printf("*");
-			else if (x == 0)
+
+			else if (x == 0) // Print y axis 
 				printf("|");
 
-			else if (y == 0)
+			else if (y == 0) // Print x axis
 				printf("-");
 			else
 				printf(" ");
