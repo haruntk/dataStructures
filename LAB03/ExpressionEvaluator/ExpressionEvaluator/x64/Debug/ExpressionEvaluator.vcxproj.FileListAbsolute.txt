@@ -1,0 +1,2 @@
+C:\Users\vtn\Desktop\LAB03\ExpressionEvaluator\ExpressionEvaluator\x64\Debug\ExpressionEvaluator.exe
+C:\Users\vtn\Desktop\dataStructures\LAB03\ExpressionEvaluator\ExpressionEvaluator\x64\Debug\ExpressionEvaluator.exe

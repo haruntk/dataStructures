@@ -1,0 +1,6 @@
+﻿  Expression.cpp
+C:\Users\vtn\Desktop\dataStructures\LAB03\ExpressionEvaluator\ExpressionEvaluator\Expression.cpp(77,6): warning C4101: 'result': unreferenced local variable
+C:\Users\vtn\Desktop\dataStructures\LAB03\ExpressionEvaluator\ExpressionEvaluator\Expression.cpp(75,7): warning C4101: 'token': unreferenced local variable
+  main.cpp
+  Generating Code...
+  ExpressionEvaluator.vcxproj -> C:\Users\vtn\Desktop\dataStructures\LAB03\ExpressionEvaluator\ExpressionEvaluator\x64\Debug\ExpressionEvaluator.exe
