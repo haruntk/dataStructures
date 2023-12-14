@@ -1,6 +1,6 @@
 ﻿  Poly.cpp
-C:\Users\HARUN\OneDrive\Masaüstü\dataStructures\Lab02\Poly\Poly.cpp(36,17): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\HARUN\OneDrive\Masaüstü\dataStructures\Lab02\Poly\Poly.cpp(40,18): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\vtn\Desktop\dataStructures\Lab02\Poly\Poly.cpp(36,17): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\vtn\Desktop\dataStructures\Lab02\Poly\Poly.cpp(40,18): warning C4305: '*=': truncation from 'double' to 'float'
   main.cpp
   Generating Code...
-  Poly.vcxproj -> C:\Users\HARUN\OneDrive\Masaüstü\dataStructures\Lab02\Poly\x64\Debug\Poly.exe
+  Poly.vcxproj -> C:\Users\vtn\Desktop\dataStructures\Lab02\Poly\x64\Debug\Poly.exe
