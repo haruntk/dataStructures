@@ -34,8 +34,16 @@ void ThreadedBST::remove(int key) {
 /// If the key is not found, return NULL
 /// 
 BSTNode *ThreadedBST::find(int key) {
-	// Fill this in
-	return NULL;
+	BSTNode* node = root;
+	while (node->key!=key && node!=NULL) {
+		if ((node->key > key && node->leftLinkType == THREAD) || (node->key < key && node->rightLinkType == THREAD))
+			return NULL;
+		else if (node->key > key)
+			node = node->left;
+		else if (node->key < key)
+			node = node->right;
+	}
+	return node;
 } // end-find
 
 ///-----------------------------------------------
