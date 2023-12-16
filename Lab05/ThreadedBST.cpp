@@ -18,7 +18,42 @@ void ThreadedBST::eraseTreeNodes(BSTNode* node) {
 /// Adds a given key to the BST
 /// 
 void ThreadedBST::add(int key) {
-	// Fill this in
+	BSTNode* newNode = new BSTNode(key);
+	BSTNode* temp = root;
+	if (root == NULL) {
+		root = newNode;
+		return;
+	}
+
+	while (1) {
+		if (temp->key == key) {
+			return;
+		}
+		else if(temp->key > key){
+			if (temp->leftLinkType == CHILD) {
+				temp = temp->left;
+			}
+			else {
+				temp->leftLinkType = CHILD;
+				newNode->left = temp->left;
+				newNode->right = temp;
+				temp->left = newNode;
+				break;
+			}
+		}
+		else if(temp->key < key){
+			if (temp->rightLinkType == CHILD) {
+				temp = temp->right;
+			}
+			else {
+				temp->rightLinkType = CHILD;
+				newNode->right = temp->right;
+				newNode->left = temp;
+				temp->right = newNode;
+			}
+		}
+	}
+
 } // end-add
 
 ///-----------------------------------------------
@@ -66,7 +101,7 @@ BSTNode* ThreadedBST::min() {
 /// 
 BSTNode* ThreadedBST::max() {
 	BSTNode* node = root;
-	while (root->right) {
+	while (node->right) {
 		node = node->right;
 	}
 	return node;
@@ -78,9 +113,16 @@ BSTNode* ThreadedBST::max() {
 /// If the inorder predecessor does not exist, returns NULL
 /// 
 BSTNode* ThreadedBST::previous(BSTNode* node) {
-	if (node->leftLinkType == THREAD)
+	if (node->leftLinkType == THREAD) {
 		return node->left;
-	return NULL;
+	}
+	else {
+		node = node->left;
+		while (node->rightLinkType == CHILD) {
+			node = node->right;
+		}
+		return node;
+	}
 } // end-previous
 
 ///-----------------------------------------------
@@ -89,7 +131,14 @@ BSTNode* ThreadedBST::previous(BSTNode* node) {
 /// If the inorder successor does not exist, returns NULL
 /// 
 BSTNode* ThreadedBST::next(BSTNode* node) {
-	if (node->rightLinkType == THREAD)
+	if (node->rightLinkType==THREAD) {
 		return node->right;
-	return NULL;
+	}
+	else {
+		node = node->right;
+		while (node->leftLinkType == CHILD) {
+			node = node->left;
+		}
+		return node;
+	}
 } // end-next
