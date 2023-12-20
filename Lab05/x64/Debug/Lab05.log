@@ -1,6 +1,2 @@
-﻿  main.cpp
-C:\Users\vtn\Desktop\Lab05\main.cpp(74,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\vtn\Desktop\Lab05\main.cpp(135,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  ThreadedBST.cpp
-  Generating Code...
-  Lab05.vcxproj -> C:\Users\vtn\Desktop\Lab05\x64\Debug\Lab05.exe
+﻿  ThreadedBST.cpp
+  Lab05.vcxproj -> C:\Users\HARUN\OneDrive\Masaüstü\dataStructures\Lab05\x64\Debug\Lab05.exe

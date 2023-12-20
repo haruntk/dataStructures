@@ -1,1 +1,2 @@
 C:\Users\vtn\Desktop\Lab05\x64\Debug\Lab05.exe
+C:\Users\HARUN\OneDrive\Masaüstü\dataStructures\Lab05\x64\Debug\Lab05.exe
