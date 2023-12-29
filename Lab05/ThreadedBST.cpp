@@ -20,36 +20,36 @@ void ThreadedBST::eraseTreeNodes(BSTNode* node) {
 void ThreadedBST::add(int key) {
 	BSTNode* newNode = new BSTNode(key);
 	BSTNode* temp = root;
-	if (root == NULL) {
+	if (root == NULL) { // If root is NULL, make new node root
 		root = newNode;
 		return;
 	}
 
 	while (1) {
-		if (temp->key == key) {
+		if (temp->key == key) { // If key is already exists, return without adding
 			return;
 		}
 		else if (temp->key > key) {
-			if (temp->leftLinkType == CHILD) {
-				temp = temp->left;
+			if (temp->leftLinkType == CHILD) { // If tree node is bigger than key and left node is child
+				temp = temp->left;			  // Go to left of the tree
 			}
-			else {
-				temp->leftLinkType = CHILD;
-				newNode->left = temp->left;
-				newNode->right = temp;
-				temp->left = newNode;
+			else { // If left node is thread
+				temp->leftLinkType = CHILD;  // Make the leaf child
+				newNode->left = temp->left; // Assign temp left as new node's left
+				newNode->right = temp; // Assign new node's right as temp
+				temp->left = newNode; // Assign temp's left as new node
 				break;
 			}
 		}
 		else if (temp->key < key) {
-			if (temp->rightLinkType == CHILD) {
-				temp = temp->right;
+			if (temp->rightLinkType == CHILD) { // If tree node is smaller than key and right node is child
+				temp = temp->right; // Go to right of tree
 			}
-			else {
-				temp->rightLinkType = CHILD;
-				newNode->right = temp->right;
-				newNode->left = temp;
-				temp->right = newNode;
+			else { // If right node is thread
+				temp->rightLinkType = CHILD; //  Make the leaf child
+				newNode->right = temp->right; //Assign temp right as new node's left
+				newNode->left = temp; // Assign new node's left as temp
+				temp->right = newNode; // Assign temp's right as new node
 				break;
 			}
 		}
@@ -187,16 +187,16 @@ void ThreadedBST::remove(int key) {
 /// If the key is not found, return NULL
 /// 
 BSTNode* ThreadedBST::find(int key) {
-	BSTNode* node = root;
-	while (node->key != key && node != NULL) {
-		if ((node->key > key && node->leftLinkType == THREAD) || (node->key < key && node->rightLinkType == THREAD))
-			return NULL;
-		else if (node->key > key)
-			node = node->left;
-		else if (node->key < key)
-			node = node->right;
+	BSTNode* node = root; // Assign a pointer to root
+	while (node->key != key && node != NULL) { // Iterate while key is not found and node is not null
+		if ((node->key > key && node->leftLinkType == THREAD) || (node->key < key && node->rightLinkType == THREAD)) // If node is not in the tree 
+			return NULL;																							// Return null
+		else if (node->key > key) // If node is bigger than key 
+			node = node->left;   // Go to the left 
+		else if (node->key < key) // If key is bigger than node
+			node = node->right;  // Go to the right
 	}
-	return node;
+	return node; // Found the node, return
 } // end-find
 
 ///-----------------------------------------------
@@ -205,11 +205,11 @@ BSTNode* ThreadedBST::find(int key) {
 /// If the key is not found, return NULL
 /// 
 BSTNode* ThreadedBST::min() {
-	BSTNode* node = root;
-	if (node == nullptr)
+	BSTNode* node = root; // Assign a pointer to root
+	if (node == nullptr) // If node is null return null
 		return nullptr;
 	while (node->left) {
-		node = node->left;
+		node = node->left; // Go to the very left of the tree and return
 	}
 	return node;
 } // end-min
@@ -221,7 +221,9 @@ BSTNode* ThreadedBST::min() {
 /// 
 BSTNode* ThreadedBST::max() {
 	BSTNode* node = root;
-	while (node->right) {
+	if (node == nullptr) // If node is null return null
+		return nullptr;
+	while (node->right) { // Go to the very right of the tree and return
 		node = node->right;
 	}
 	return node;
@@ -233,15 +235,15 @@ BSTNode* ThreadedBST::max() {
 /// If the inorder predecessor does not exist, returns NULL
 /// 
 BSTNode* ThreadedBST::previous(BSTNode* node) {
-	if (node->leftLinkType == THREAD) {
-		return node->left;
+	if (node->leftLinkType == THREAD) { 
+		return node->left;  // If node's left is thread return node's left
 	}
 	else {
 		node = node->left;
 		while (node->rightLinkType == CHILD) {
-			node = node->right;
+			node = node->right; // Go until right is thread
 		}
-		return node;
+		return node; // Return node
 	}
 } // end-previous
 
@@ -252,13 +254,13 @@ BSTNode* ThreadedBST::previous(BSTNode* node) {
 /// 
 BSTNode* ThreadedBST::next(BSTNode* node) {
 	if (node->rightLinkType == THREAD) {
-		return node->right;
+		return node->right; // If node's right is thread return node's left
 	}
 	else {
 		node = node->right;
 		while (node->leftLinkType == CHILD) {
-			node = node->left;
+			node = node->left; // Go until left is thread
 		}
-		return node;
+		return node; // Return node
 	}
 } // end-next

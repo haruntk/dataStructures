@@ -1,0 +1,2 @@
+C:\Users\vtn\Desktop\Lab06\Lab06\x64\Debug\Lab06.exe
+C:\Users\vtn\Desktop\dataStructures\Lab06\x64\Debug\Lab06.exe

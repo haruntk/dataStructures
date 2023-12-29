@@ -1,0 +1,3 @@
+﻿  RobotController.cpp
+NaoRobotAPI.lib(NaoRobotAPI.obj) : warning LNK4099: PDB '' was not found with 'NaoRobotAPI.lib(NaoRobotAPI.obj)' or at ''; linking object as if no debug info
+  NaoRobotAPI.vcxproj -> C:\Users\vtn\Desktop\OOP_Project\NaoRobotAPI\x64\Debug\NaoRobotAPI.exe
